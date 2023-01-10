@@ -14,7 +14,10 @@ function App() {
 
   // ACCESSING ALL RESOURCES FROM THE BACKEND USING REDUX TO DISPLAY
   const resouces = useSelector(state=>state.resources)
+  
+  // PREVIEW AVAILBLE RESOUCES IN INSPECT ELEMENT TERMINAL
   console.log(resouces)
+
 
   // RETRIVING ALL RESOUCES FROM BACKEND USING REDUX
   useEffect(()=>{
