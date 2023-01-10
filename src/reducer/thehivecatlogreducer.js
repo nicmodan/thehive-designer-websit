@@ -5,7 +5,7 @@ import {getAll} from "../Service/thehiveCatlog";
 const thehivecatlogSlice = createSlice({
     name: "thehivecatlog",
     initialState: [
-
+        false
     ],
     reducers: {
         setAllItems(state, action){

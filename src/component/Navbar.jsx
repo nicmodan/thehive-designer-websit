@@ -2,10 +2,13 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { FiShoppingCart } from 'react-icons/fi';
 import { FaInstagram, FaTwitter } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 const active = 'border-b-2 border-black py-5 px-1';
 
 const Navbar = () => {
+	const cartState =  useSelector((state) => state.cart);
+
 	return (
 		<header className='flex justify-between items-center w-full h-10 px-5 py-8 shadow-xl bg-white'>
 			<h3>The Hive</h3>
@@ -64,7 +67,7 @@ const Navbar = () => {
 				>
 					<FiShoppingCart />
 					<p>Cart</p>
-					<p>0</p>
+					<p>{cartState.length}</p>
 				</Link>
 			</div>
 		</header>

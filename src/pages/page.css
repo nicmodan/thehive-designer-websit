@@ -1,0 +1,14 @@
+.display-ordeer-preview{
+    width: 22%;
+    height: 360px;
+    /* height: ; */
+}
+.display-name-info{
+    width: auto;
+    /* height */
+}
+.display-cart{
+    font-size: 25px;
+    /* z-index: 10; */
+    cursor: pointer;
+}
