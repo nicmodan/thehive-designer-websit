@@ -1,7 +1,7 @@
 import React from 'react';
 import "./page.css"
 import {Row, Col, Container} from "react-bootstrap"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import {BsCartPlus} from "react-icons/bs"
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart } from '../reducer/user-Store';
@@ -12,11 +12,15 @@ const Male = () => {
 	const cartState =  useSelector((state) => state.cart);
 	const dispatch = useDispatch()
 
+	// RETIVE DESIGNER INFORMATION
+	const nameOfDesigner = useParams().nameOfDesigner
+
 	const handelCart = (id) =>{
 		// console.log(id)
 		const newState = [...state]
 		const totalCarts = [...cartState]
-		const obj = {...newState.filter(val=>val["_id"]===id), ...{color: "", size: ""}}
+		const uniqieID = cartState.length + 1
+		const obj = {...newState.filter(val=>val["_id"]===id), ...{color: "", size: "", uniqieID}}
 
 		// THIS FUNCTION IS FOR UPDATE AND REPLACING VALUES
 		

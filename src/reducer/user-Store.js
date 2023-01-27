@@ -11,9 +11,10 @@ const thehiveCartSice = createSlice({
             return action.payload
         },
         
+        
     }
 })
 
-export const {addToCart} = thehiveCartSice.actions
+export const { addToCart } = thehiveCartSice.actions
 
 export default thehiveCartSice.reducer

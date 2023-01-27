@@ -1,11 +1,35 @@
 import React, { useState } from 'react';
 
-const CartItem = ({ item, removeItem }) => {
+import { addToCart } from '../reducer/user-Store';
+import { useDispatch, useSelector } from 'react-redux';
+
+const CartItem = ({ item, removeItem, idx }) => {
+	
+	// REDUX STROE
+	const carts = useSelector( state => state.cart )
+
+	const dispatch = useDispatch()
+	
+
 	const [quantity, setQuantity] = useState(1);
+	const [currentTotal, setCurrentTotal] = useState(carts[idx][0].cost)
+	const [fixedPreice, _ ] = useState(carts[idx][0].cost)
 	// remove the dollar sign and covert to number
-	let price = Number(item[0].cost.slice(1));
+	const price = Number( fixedPreice.slice(1) ) // Number(carts[idx][0].cost.slice(1)) // Number(item[0].cost.slice(1));
 	// total price
-	const itemTotal = quantity * price;
+	// const itemTotal = ()=>{
+
+	// 	const curency = item[0].cost.slice(0, 1)
+	// 	const total = Number(quantity * price).toFixed(2)
+	// 	// {`$${itemTotal.toFixed(2)}`}
+
+	// 	console.log("total D", total)
+	// 	console.log("quality", quantity)
+	// 	// console.log("input", e.target.value)
+	// 	console.log("price D", price)
+
+	// 	return `${curency}${total}`
+	// };
 
 	const getImages = (imageObj) => {
 		if (Object.keys(imageObj)[0] == ' ') {
@@ -16,8 +40,60 @@ const CartItem = ({ item, removeItem }) => {
 	};
 
 	const handleQuantity = (e) => {
+		// itemTotal()
+
+		const curency = item[0].cost.slice(0, 1)
+		const total = Math.floor(e.target.value * price)
+		// {`$${itemTotal.toFixed(2)}`}
+
+		// console.log("total", total)
+		// console.log("input", e.target.value)
+		// console.log("price", price)
+
+		const mainCost = `${curency}${total}`
+		setCurrentTotal(mainCost)
+
+		// UDATING REDUX STORE
+		const newData = [...carts]
+		const target = newData.filter(val=>val[0]._id===item[0]._id)
+
+		// const resulte = [ ...target, ...{target.cost: mainCost} ]
+		// [...target, ...{"0": {...target[0][0], cost: mainCost} }]
+		// console.log(target[0])
+		// console.log(target[0][0])
+		// console.log(target[0][0].cost)
+		// console.log(newData)
+		// console.log(target)
+		// target[0]
+
+		const updateCost = [{ ...target[0][0], "cost": mainCost } ]
+		const newtarget = newData.map(val=>{
+				// const info = val
+
+				if(val[0]._id===item[0]._id){
+					target[0] = updateCost[0]
+					return {0: target[0], 
+								color: target[0]["color"], 
+								size: target[0]["size"],
+								uniqieID: target[0]["uniqieID"]
+							}
+				}else{
+					return val
+				}
+				// ? updateCost[0] :val
+			})
+		// console.log( [{ ...target[0][0], "cost": mainCost }] )
+		console.log(newtarget)
+		// console.log(carts)
+		dispatch(addToCart(newtarget))
 		setQuantity(e.target.value);
+
 	};
+
+	// const removeItemById = () =>{
+	// 	// dispatch(removeFromCart())
+	// }
+	// removeItemById()
 
 	return (
 		<div className='flex py-4 gap-3'>
@@ -42,7 +118,7 @@ const CartItem = ({ item, removeItem }) => {
 				<div>
 					<button
 						type='button'
-						// onClick={removeItem} this is to remove item
+						onClick={removeItem} // this is to remove item
 						className='text-sm border-b border-black px-1'
 					>
 						Remove Item
@@ -60,15 +136,17 @@ const CartItem = ({ item, removeItem }) => {
 							onChange={handleQuantity}
 							value={quantity}
 						>
-							{Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
-								<option value={num}>{num}</option>
+							{/* OKAY !!!! */}
+							{Array.from({ length: 10 }, (_, i) => i + 1).map((num, keys) => (
+								<option key={keys} value={num}>{num}</option>
 							))}
+
 						</select>
 					</label>
 				</div>
 				<div>
 					<p className='text-gray-400 font-bold'>Total</p>
-					<p>{`$${itemTotal.toFixed(2)}`}</p>
+					<p>{ currentTotal }</p>
 				</div>
 			</div>
 		</div>

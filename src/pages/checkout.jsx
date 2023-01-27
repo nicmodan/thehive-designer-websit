@@ -4,14 +4,17 @@ import { Row, Col, Container } from 'react-bootstrap';
 // import { Link } from "react-router-dom"
 import { BsCartPlus, BsCart } from 'react-icons/bs';
 
-import { useSelector } from 'react-redux';
-// import { addToCart } from '../reducer/user-Store';
+import { useSelector, useDispatch } from 'react-redux';
+import { addToCart } from '../reducer/user-Store';
+
 import { postCheckout } from '../Service/checkout';
 
 import CartItem from '../component/CartItem';
 
+
 const Checkout = () => {
 	const cartState = useSelector((state) => state.cart);
+	const dispatch = useDispatch()
 
 
 	const handelCheckout = async (data) => {
@@ -24,22 +27,53 @@ const Checkout = () => {
 	};
 
 	// REMOVE ITEMS FROM CART
-	const removeItem = () => {
+	const removeItem = (id) => {
+
 		// function to remove item from cart
+		
+		const cartData = cartState.filter(val=>val.uniqieID !== id)
+		// console.log(cartData)
+		// console.log(cartState)
+
+		dispatch(addToCart(cartData))
 	};
 
 	// CART ITEM LIST
+	// console.log(cartState)
+
+	const totalCartOrder = () =>{
+		
+		let total = 0
+
+		if(cartState[0]){
+			const curency = cartState[0][0].cost.slice(0, 1)
+
+			cartState.map((val)=>{
+
+				total += Math.floor(Number( val[0].cost.slice(1) ))
+
+			})
+
+			return ` ${curency}${total} `
+		}else{
+			return total
+		}
+
+		
+	}
+
 	const cartitem = cartState.map((item, index) => (
 		<CartItem
 			key={index}
+			idx={index}
 			item={item}
-			removeItem={removeItem}
+			removeItem={()=>removeItem( item.uniqieID )}
 		/>
 	));
 	return (
 		<div className='px-8 w-9/12 mx-auto mt-10'>
 			<div className='flex'>
-				{cartState.length == 0 ? (
+				{!cartState[0] ? (
 					<div className='w-3/5 mt-3'>
 						<h1>No items in Cart</h1>
 					</div>
@@ -51,7 +85,10 @@ const Checkout = () => {
 					<div className='border rounded-lg shadow-lg p-3 mt-3'>
 						<div className='flex justify-between items-center'>
 							<p>Subtotal</p>
-							<p>$0</p>
+							<p>
+								{/* $0 */}
+								{totalCartOrder()}
+							</p>
 						</div>
 						<p>Shipping and taxes are included at checkout</p>
 						<div className='mt-2'>

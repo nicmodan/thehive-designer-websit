@@ -16,7 +16,8 @@ const HomeDecor = () => {
 		// console.log(id)
 		const newState = [...state]
 		const totalCarts = [...cartState]
-		const obj = {...newState.filter(val=>val["_id"]===id), ...{color: "", size: ""}}
+		const uniqieID = cartState.length + 1
+		const obj = {...newState.filter(val=>val["_id"]===id), ...{color: "", size: "", uniqieID}}
 
 		// THIS FUNCTION IS FOR UPDATE AND REPLACING VALUES
 		

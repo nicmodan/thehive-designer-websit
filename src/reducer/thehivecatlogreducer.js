@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getDesignerByName } from "../getdesignerProducts";
 import {getAll} from "../Service/thehiveCatlog";
 
 
 const thehivecatlogSlice = createSlice({
     name: "thehivecatlog",
     initialState: [
-        false
+        false,
+       
     ],
     reducers: {
         setAllItems(state, action){
